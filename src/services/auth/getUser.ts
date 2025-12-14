@@ -2,7 +2,7 @@ import { asyncQuery } from "../../../config/database";
 
 export async function getUserByEmail(email: string) {
     const query = `
-        SELECT * FROM users WHERE email = $1
+        SELECT * FROM company_admins WHERE email = $1
     `;
     const result = await asyncQuery(query, [email]);
     if (!result || result.length === 0) {

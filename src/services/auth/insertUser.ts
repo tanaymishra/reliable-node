@@ -2,7 +2,7 @@ import { asyncQuery } from "../../../config/database";
 
 export async function insertUser(name: string, email: string, password: string) {
     const query = `
-        INSERT INTO users (name, email, password) 
+        INSERT INTO company_admins (name, email, password) 
         VALUES ($1, $2, $3) 
         ON CONFLICT (email) DO NOTHING 
         RETURNING *
