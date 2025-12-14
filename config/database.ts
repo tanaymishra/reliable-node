@@ -14,7 +14,7 @@ export async function connect() {
     }
 }
 
-export async function asyncQuery(text: string, params: [any]) {
+export async function asyncQuery(text: string, params: any[]) {
     try {
         const res = await pool.query(text, params)
         return res.rows
