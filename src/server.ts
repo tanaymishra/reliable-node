@@ -36,11 +36,27 @@ app.get('/health', (req: Request, res: Response) => {
         timestamp: new Date().toISOString(),
     });
 });
+import { Server as SocketIOServer } from 'socket.io';
+
 // Start Server
 const server: Server = app.listen(PORT, () => {
     console.log(`\n🚀 Server is running responsibly on port ${PORT}`);
     console.log(`👉 http://localhost:${PORT}`);
 });
+
+import { socketManager } from './socket/socketManager';
+
+const io = new SocketIOServer(server, {
+    cors: {
+        origin: "*", // Adjust in production
+        methods: ["GET", "POST"]
+    }
+});
+
+// Initialize Socket Manager
+socketManager.initialize(io);
+
+export { io };
 
 // Graceful Shutdown
 const shutdown = (signal: string) => {
