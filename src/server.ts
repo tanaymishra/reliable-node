@@ -19,6 +19,10 @@ app.use(morgan('dev')); // Logger
 app.use(express.json()); // JSON Body Parser
 app.use(express.urlencoded({ extended: true })); // URL Encoded Body Parser
 
+// Routes
+import masterRoutes from './routes/master.routes';
+app.use('/api/v1', masterRoutes);
+
 
 //Connect to DAtabase
 connect()
