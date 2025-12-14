@@ -54,7 +54,7 @@ export default async function googleAuth(req: Request, res: Response) {
 
         const token = jwt.sign(
             { id: user.id, email: user.email, role: 'company-admin' },
-            process.env.JWT_SECRET || "default_secret",
+            process.env.JWT_SECRET as string,
             { expiresIn: "1d" }
         );
 
