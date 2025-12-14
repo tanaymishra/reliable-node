@@ -11,9 +11,22 @@ export default async function login(req: Request, res: Response) {
             return;
         }
 
-        const user = await getUserByEmail(email);
+        // DEBUGGING LOGS - REMOVE IN PRODUCTION
+        console.log(`Login attempt for: ${email}`);
 
-        if (!user || user.password !== password) {
+        const user = await getUserByEmail(email);
+        console.log("User found:", user ? "Yes" : "No");
+
+        if (!user) {
+            console.log("User not found in DB");
+            res.status(401).json({ message: "Invalid email or password" });
+            return;
+        }
+
+        // Check exact match
+        if (user.password !== password) {
+            console.log("Password mismatch");
+            // console.log(`DB: '${user.password}', Input: '${password}'`); // Uncomment to see actual values
             res.status(401).json({ message: "Invalid email or password" });
             return;
         }
