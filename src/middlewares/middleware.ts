@@ -24,7 +24,7 @@ export const authMiddleware = (roles: UserPayload["role"][]) => {
                 return res.status(401).json({ message: "Unauthorized" });
             }
 
-            const decoded = verify(token, process.env.JWT_SECRET as string) as UserPayload;
+            const decoded = verify(token, process.env.JWT_SECRET || "default_secret") as UserPayload;
 
             // Attach user info to request object
             req.user = decoded;
