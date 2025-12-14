@@ -35,6 +35,7 @@ export const authMiddleware = (roles: UserPayload["role"][]) => {
 
             next();
         } catch (error) {
+            console.error("JWT Verification Error:", error);
             return res.status(403).json({ message: "Forbidden: Invalid or expired token" });
         }
     }
