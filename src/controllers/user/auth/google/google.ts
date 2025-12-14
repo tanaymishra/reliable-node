@@ -3,6 +3,7 @@ import { getUserByEmail } from "../../../../services/auth/getUser";
 import { insertUser } from "../../../../services/auth/insertUser";
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from 'google-auth-library';
+import bcrypt from "bcrypt";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -36,10 +37,11 @@ export default async function googleAuth(req: Request, res: Response) {
             // Using a placeholder password for Google users. 
             // Ideally, the DB should allow null passwords or have a provider column.
             const placeholderPassword = `google_${googleId || Date.now()}`;
+            const hashedPassword = await bcrypt.hash(placeholderPassword, 10);
             // Provide a name if missing
             const userName = name || email.split('@')[0];
 
-            const result = await insertUser(userName, email, placeholderPassword);
+            const result = await insertUser(userName, email, hashedPassword);
 
             // If insertUser uses ON CONFLICT DO NOTHING and returns nothing (if race condition), fetch again.
             // But insertUser returns result.

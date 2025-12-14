@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getUserByEmail } from "../../../../services/auth/getUser";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 export default async function login(req: Request, res: Response) {
     try {
@@ -11,22 +12,16 @@ export default async function login(req: Request, res: Response) {
             return;
         }
 
-        // DEBUGGING LOGS - REMOVE IN PRODUCTION
-        console.log(`Login attempt for: ${email}`);
-
         const user = await getUserByEmail(email);
-        console.log("User found:", user ? "Yes" : "No");
 
         if (!user) {
-            console.log("User not found in DB");
             res.status(401).json({ message: "Invalid email or password" });
             return;
         }
 
-        // Check exact match
-        if (user.password !== password) {
-            console.log("Password mismatch");
-            // console.log(`DB: '${user.password}', Input: '${password}'`); // Uncomment to see actual values
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordValid) {
             res.status(401).json({ message: "Invalid email or password" });
             return;
         }
