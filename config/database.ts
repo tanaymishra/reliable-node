@@ -11,6 +11,7 @@ export async function connect() {
     }
     catch (e) {
         console.log("Error Connecting to Database", e)
+        throw e;
     }
 }
 
@@ -21,5 +22,6 @@ export async function asyncQuery(text: string, params: any[]) {
     }
     catch (e) {
         console.log("Error Querying Database", e)
+        throw e;
     }
 }
